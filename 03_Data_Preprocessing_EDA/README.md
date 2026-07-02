@@ -172,6 +172,12 @@ A common beginner mistake is doing these steps in an order that lets information
 | `sklearn.preprocessing.StandardScaler` | Z-score standardization |
 | `sklearn.preprocessing.MinMaxScaler` | Min-max normalization |
 | `sklearn.preprocessing.RobustScaler` | Median/IQR-based robust scaling |
+| `series.mode()` | Categorical missing-value imputation |
+| `series.value_counts(normalize=True)` | Cardinality check, rare-category detection |
+| `sklearn.utils.class_weight.compute_class_weight` | Class-imbalance-aware training weights |
+| `sklearn.model_selection.train_test_split(stratify=)` | Class-proportion-preserving split |
+| `sklearn.feature_selection.VarianceThreshold` | Near-constant feature removal |
+| `sklearn.compose.ColumnTransformer` + `sklearn.pipeline.Pipeline` | Leakage-safe, one-call preprocessing chain |
 
 ---
 
