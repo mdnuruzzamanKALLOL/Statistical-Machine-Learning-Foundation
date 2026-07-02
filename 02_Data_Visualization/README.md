@@ -115,6 +115,10 @@ A pairplot's off-diagonal scatter plots are, collectively, a visual expansion of
 | Violin plot | Boxplot + full distribution shape combined | `sns.violinplot()` |
 | Heatmap | Matrix data (e.g. correlation matrix) | `sns.heatmap()` |
 | Pairplot | Every pairwise relationship + per-feature distribution | `sns.pairplot()` |
+| Facet grid | Same plot repeated per category, side by side | `sns.catplot()` / `FacetGrid` |
+| Joint plot | Scatter + both marginal distributions + regression line | `sns.jointplot()` |
+| Stacked bar | Part-to-whole composition across categories | `df.plot(kind="bar", stacked=True)` |
+| Error bar plot | Point estimate + uncertainty (std/SE) per group | `ax.errorbar()` |
 
 ---
 
@@ -143,6 +147,13 @@ A pairplot's off-diagonal scatter plots are, collectively, a visual expansion of
 | `sns.heatmap(matrix, annot=True, cmap=)` | Matrix/correlation visualization |
 | `sns.pairplot(df, vars=, hue=)` | Grid of every pairwise feature relationship |
 | `df.corr()` | Pearson correlation matrix |
+| `sns.violinplot()` | Boxplot + KDE shape combined |
+| `sns.catplot(kind=, col=, col_wrap=)` | Faceted small multiples |
+| `ax.fill_between()`, `ax.annotate()` | Uncertainty bands and figure annotation |
+| `sns.jointplot(kind="reg")` | Scatter + marginals + regression line |
+| `ax.set_xscale("log")` | Log-scale axis for skewed data |
+| `fig.savefig(path, dpi=, bbox_inches="tight")` | Export figure to file |
+| `ax.errorbar(x, y, yerr=)` | Point estimate with uncertainty bars |
 | `series.quantile([0.25, 0.75])` | Manual $Q_1$/$Q_3$ computation for IQR |
 
 ---
