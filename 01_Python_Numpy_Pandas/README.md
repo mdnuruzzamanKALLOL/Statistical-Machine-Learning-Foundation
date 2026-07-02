@@ -226,6 +226,12 @@ Rule of thumb: if a Pandas column shows `dtype: object` and you expected numbers
 | `.isna()`, `.fillna()`, `.dropna()` | Missing data handling |
 | `.groupby()` | Split-apply-combine aggregation |
 | `.describe()`, `.info()`, `.value_counts()` | Quick statistical summary |
+| `np.sort`, `np.argsort`, `np.unique` | Sorting and de-duplication |
+| `np.where`, `np.select` | Vectorized conditional logic |
+| `np.intersect1d`, `np.union1d`, `np.setdiff1d`, `np.isin` | Set operations on arrays |
+| `pd.merge(how=)` | SQL-style joins (inner/left/outer) |
+| `pd.pivot_table()` | Reshaping long data into a summary grid |
+| `.str.*`, `.apply()` | Vectorized string ops and custom element-wise transforms |
 
 ---
 
