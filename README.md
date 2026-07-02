@@ -20,7 +20,7 @@ Each topic folder contains its own `README.md` (concept + math explanation) and 
 
 ## 📦 Datasets
 
-[**datasets/README.md**](datasets/) — a catalog of 162 load-tested datasets (real-world + synthetic), mapped to the topic each one is best suited for. The actual CSV files (212 curated + this author's full personal collection, 418 total) live in the central **[Datasets](https://github.com/mdnuruzzamanKALLOL/Datasets)** repo.
+All datasets — the 162-entry load-tested catalog ([CATALOG.md](https://github.com/mdnuruzzamanKALLOL/Datasets/blob/main/CATALOG.md)) and the actual CSV files (212 curated + this author's full personal collection, 418 total) — live in the central **[Datasets](https://github.com/mdnuruzzamanKALLOL/Datasets)** repo.
 
 ## 🔗 Related
 
