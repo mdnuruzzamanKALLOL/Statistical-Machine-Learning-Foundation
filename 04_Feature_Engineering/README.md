@@ -146,6 +146,13 @@ While building this notebook, the first draft created a ratio feature as `total_
 | `df.corr()` | Correlation-based redundancy filter |
 | `sklearn.feature_selection.mutual_info_regression` | Non-linear dependency filter |
 | `sklearn.ensemble.RandomForestRegressor.feature_importances_` | Embedded, model-based importance |
+| `np.sin`/`np.cos` with `2*pi*x/period` | Cyclical encoding of periodic features |
+| `df.groupby(col)[target].mean()` + `.map()` | Target (mean) encoding |
+| `sklearn.feature_selection.RFE` | Wrapper-method feature selection |
+| `sklearn.inspection.permutation_importance` | Model-agnostic importance |
+| `sklearn.decomposition.PCA` | Feature reduction via principal components |
+| `pd.qcut()` | Quantile-based (equal-count) binning |
+| `sklearn.feature_extraction.FeatureHasher` | Fixed-size encoding for extreme-cardinality categoricals |
 
 ---
 
