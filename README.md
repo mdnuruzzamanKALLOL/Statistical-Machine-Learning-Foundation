@@ -20,7 +20,7 @@ Each topic folder contains its own `README.md` (concept + math explanation) and 
 
 ## 📦 Datasets
 
-[**datasets/README.md**](datasets/) — a catalog of 114 load-tested datasets (real-world + synthetic) for practicing every algorithm in this series, mapped to the topic each one is best suited for.
+[**datasets/README.md**](datasets/) — a catalog of 162 load-tested datasets (real-world + synthetic), 212 of them also available as ready-to-use CSV files in [`datasets/csv/`](datasets/csv/), mapped to the topic each one is best suited for.
 
 ## 🔗 Related
 

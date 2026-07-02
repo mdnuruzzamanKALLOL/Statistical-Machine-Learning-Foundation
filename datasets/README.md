@@ -1,19 +1,41 @@
-# 📦 Dataset Catalog — 114 Datasets for Statistical ML Practice
+# 📦 Dataset Catalog — 162 Cataloged Datasets, 212 Ready-to-Use CSV Files
 
-A curated, **fully load-tested** catalog of datasets for practicing every algorithm in this series (Foundation + [Classical ML](https://github.com/mdnuruzzamanKALLOL/Statistical-Machine-Learning-Classical-ML)). Every entry below is a one-line load call — no manual downloads, no broken links. Every single name in this file was verified to actually load, live, while building this catalog.
-
-No raw data files are stored in this repo on purpose: it keeps the repo lightweight, avoids redistribution/licensing issues, and — more importantly — teaches the real-world skill of pulling data from standard APIs (`sklearn.datasets`, `seaborn`, `OpenML`), which is what you'll actually do in practice.
+A curated, **fully load-tested** catalog of datasets for practicing every algorithm in this series (Foundation + [Classical ML](https://github.com/mdnuruzzamanKALLOL/Statistical-Machine-Learning-Classical-ML)). Every dataset below has **both** a one-line API load call **and** an actual CSV file sitting in [`csv/`](csv/) — pick whichever fits your workflow.
 
 ## 📊 Catalog Summary
 
-| Source | Count | Best for |
-|---|---|---|
-| [scikit-learn built-in / fetchable](#-1-scikit-learn-built-in--fetchable-13) | 13 | Classic benchmarks, zero setup |
-| [Seaborn built-in](#-2-seaborn-built-in-22) | 22 | EDA practice, quick visualization datasets |
-| [OpenML — batch 1](#-3-openml-real-world-batch-1-30) | 30 | Classification-heavy real-world practice |
-| [OpenML — batch 2](#-4-openml-real-world-batch-2-21) | 21 | More classification + a few regression |
-| [Synthetic generators](#-5-synthetic-generators-sklearndatasetsmake_-28) | 28 | Algorithm-targeted practice (clustering, manifolds, imbalanced classes...) |
-| **Total** | **114** | |
+| Source | Cataloged | As CSV | Best for |
+|---|---|---|---|
+| [scikit-learn built-in / fetchable](#-1-scikit-learn-built-in--fetchable-13) | 13 | 8 (5 are text/image, kept API-only) | Classic benchmarks, zero setup |
+| [Seaborn built-in](#-2-seaborn-built-in-22) | 22 | 22 | EDA practice, quick visualization datasets |
+| [OpenML — batch 1](#-3-openml-real-world-batch-1-30) | 30 | 30 | Classification-heavy real-world practice |
+| [OpenML — batch 2](#-4-openml-real-world-batch-2-21) | 21 | 21 | More classification + a few regression |
+| [OpenML — batch 3](#-5-openml-real-world-batch-3-48) | 48 | 48 | Extra real-world variety (medical, sensor, economic data) |
+| [Synthetic generators](#-6-synthetic-generators-sklearndatasetsmake_-83) | 28 (+55 extra param sweeps as CSV only) | 83 | Algorithm-targeted practice (clustering, manifolds, imbalanced classes...) |
+| **Total** | **162 cataloged** | **212 CSV files (~53 MB)** | |
+
+## 💾 Local CSV Files — `csv/`
+
+Every dataset also lives as an actual file under `csv/<source>/<name>.csv`, generated and verified in one pass:
+
+```
+csv/
+├── MANIFEST.csv       ← full index: name, task, rows, cols, size, source, path — for all 212 files
+├── sklearn/           ← 8 files
+├── seaborn/           ← 22 files
+├── openml/            ← 99 files (batches 1+2+3 combined)
+└── synthetic/         ← 83 files (28 core recipes + 55 extra parameter sweeps)
+```
+
+```python
+import pandas as pd
+df = pd.read_csv("datasets/csv/openml/credit-g.csv")          # any dataset, offline, no network call
+manifest = pd.read_csv("datasets/csv/MANIFEST.csv")            # full searchable index of all 212 files
+```
+
+Datasets larger than 15,000 rows (California Housing, Covertype, Adult, Diamonds, Letter, and several OpenML sets) were **randomly downsampled to 15,000 rows** (`random_state=42`) to keep individual files small and the repo lightweight — check the `sampled_from` column in `MANIFEST.csv` for the original row count, or use the API load call above to get the full, un-sampled version.
+
+The 55 extra synthetic parameter sweeps (different noise levels, class counts, cluster counts, random seeds) exist **only** as CSVs, not written out individually in the tables below — see `MANIFEST.csv` for their exact names and parameters (self-descriptive, e.g. `classification_imbalanced_99_1.csv`, `blobs_6_seed30.csv`).
 
 ## 📑 Table of Contents
 
@@ -22,9 +44,10 @@ No raw data files are stored in this repo on purpose: it keeps the repo lightwei
 3. [2. Seaborn Built-in (22)](#-2-seaborn-built-in-22)
 4. [3. OpenML Real-World, Batch 1 (30)](#-3-openml-real-world-batch-1-30)
 5. [4. OpenML Real-World, Batch 2 (21)](#-4-openml-real-world-batch-2-21)
-6. [5. Synthetic Generators — `sklearn.datasets.make_*` (28)](#-5-synthetic-generators-sklearndatasetsmake_-28)
-7. [Which Dataset for Which Topic?](#-which-dataset-for-which-topic)
-8. [Caveats & Notes](#️-caveats--notes)
+6. [5. OpenML Real-World, Batch 3 (48)](#-5-openml-real-world-batch-3-48)
+7. [6. Synthetic Generators — `sklearn.datasets.make_*` (83)](#-6-synthetic-generators-sklearndatasetsmake_-83)
+8. [Which Dataset for Which Topic?](#-which-dataset-for-which-topic)
+9. [Caveats & Notes](#️-caveats--notes)
 
 ---
 
@@ -172,7 +195,64 @@ Same load pattern: `fetch_openml(name="<name>", as_frame=True, parser="auto").fr
 
 ---
 
-## 🧪 5. Synthetic Generators — `sklearn.datasets.make_*` (28)
+## 🌍 5. OpenML Real-World, Batch 3 (48)
+
+Same load pattern: `fetch_openml(name="<name>", as_frame=True, parser="auto").frame`. This batch adds economic, sensor, and medical datasets not covered above.
+
+| # | Name | Task | Rows | Notes |
+|---|---|---|---|---|
+| 87 | `wdbc` | Classification (binary) | 569 | Wisconsin Diagnostic Breast Cancer |
+| 88 | `labor` | Classification (binary) | 57 | Labor negotiations, tiny + high missingness |
+| 89 | `vowel` | Classification (11-class) | 990 | Vowel recognition |
+| 90 | `waveform-5000` | Classification (3-class) | 5,000 | Synthetic-in-origin but classic real benchmark |
+| 91 | `spectf` | Classification (binary) | 349 | Cardiac SPECT images, features only |
+| 92 | `spectrometer` | Classification (many classes) | 531 | High-dimensional (102 features) |
+| 93 | `solar-flare` | Classification/Regression | 315 | Solar flare frequency prediction |
+| 94 | `soybean` | Classification (many classes) | 683 | Plant disease diagnosis, categorical |
+| 95 | `splice` | Classification (3-class) | 3,190 | DNA splice-junction sequences |
+| 96 | `sick` | Classification (binary) | 3,772 | Thyroid sick/not-sick, imbalanced |
+| 97 | `colic` | Classification (binary) | 368 | Horse colic outcome, many missing values |
+| 98 | `meta` | Regression | 528 | Meta-learning algorithm performance data |
+| 99 | `puma8NH` | Regression | 8,192 | Robot arm dynamics simulation |
+| 100 | `puma32H` | Regression | 8,192 | Robot arm, higher-dimensional variant |
+| 101 | `bank8FM` | Regression | 8,192 | Bank queue simulation |
+| 102 | `bank32nh` | Regression | 8,192 | Bank queue simulation, higher-dimensional |
+| 103 | `cpu_act` | Regression | 8,192 | Computer system activity prediction |
+| 104 | `cpu_small` | Regression | 8,192 | Smaller-feature variant of cpu_act |
+| 105 | `delta_ailerons` | Regression | 7,129 | Aircraft control (ailerons) |
+| 106 | `delta_elevators` | Regression | 9,517 | Aircraft control (elevators) |
+| 107 | `pollen` | Regression | 3,848 | Synthetic-origin pollen grain measurements |
+| 108 | `space_ga` | Regression | 3,107 | US county-level social/political data |
+| 109 | `stock` | Regression | 950 | Stock price prediction |
+| 110 | `elevators` | Regression | 16,599 | Aircraft elevator control, larger variant |
+| 111 | `house_16H` | Regression | 22,784 | House pricing, 16 features |
+| 112 | `house_8L` | Regression | 22,784 | House pricing, 8 features |
+| 113 | `fried` | Regression | 40,768 | Friedman-style synthetic-origin, large |
+| 114 | `2dplanes` | Regression | 40,768 | Synthetic-origin regression benchmark |
+| 115 | `mv` | Regression | 40,768 | Mixed-variable synthetic-origin regression |
+| 116 | `quake` | Regression | 2,178 | Earthquake magnitude prediction |
+| 117 | `socmob` | Regression/Classification | 1,156 | Social mobility count data |
+| 118 | `no2` | Regression | 500 | Air pollution (NO2) prediction |
+| 119 | `plasma_retinol` | Regression | 315 | Plasma retinol/beta-carotene levels |
+| 120 | `visualizing_environmental` | Regression | 111 | Small environmental time-series-like data |
+| 121 | `analcatdata_apnea1` | Classification | 475 | Sleep apnea diagnosis, variant 1 |
+| 122 | `analcatdata_apnea2` | Classification | 475 | Sleep apnea diagnosis, variant 2 |
+| 123 | `analcatdata_apnea3` | Classification | 450 | Sleep apnea diagnosis, variant 3 |
+| 124 | `prnn_synth` | Classification (binary) | 250 | Small synthetic-origin, 2D visualizable |
+| 125 | `rmftsa_ladata` | Regression | 508 | Time-series-style regression |
+| 126 | `sensory` | Regression | 576 | Wine sensory scoring |
+| 127 | `SWD` | Classification (ordinal) | 1,000 | Social worker decisions, ordinal target |
+| 128 | `triazines` | Regression | 186 | Drug activity regression, high-dimensional (61 features) |
+| 129 | `veteran` | Regression | 137 | Veteran's lung cancer survival data |
+| 130 | `autoPrice` | Regression | 159 | Car price regression, small |
+| 131 | `chscase_geyser1` | Regression | 222 | Old Faithful geyser, regression framing |
+| 132 | `disclosure_x_bias` | Regression | 662 | Small statistical disclosure dataset |
+| 133 | `arsenic-female-bladder` | Regression | 559 | Arsenic exposure epidemiology data |
+| 134 | `chatfield_4` | Regression | 235 | Small time-series-style regression |
+
+---
+
+## 🧪 6. Synthetic Generators — `sklearn.datasets.make_*` (83)
 
 Zero network dependency, fully reproducible with `random_state=`, and parameterized specifically to target each Classical ML topic ahead.
 
@@ -180,54 +260,54 @@ Zero network dependency, fully reproducible with `random_state=`, and parameteri
 
 | # | Recipe | Load Code | Targets which topic |
 |---|---|---|---|
-| 87 | Linear, low noise | `make_regression(n_samples=200, n_features=5, noise=10, random_state=42)` | Linear Regression basics |
-| 88 | Single feature (visualizable) | `make_regression(n_samples=200, n_features=1, noise=20, random_state=42)` | Simple/Polynomial Regression, plotting the fit line |
-| 89 | Multi-output | `make_regression(n_samples=200, n_features=5, n_targets=2, random_state=42)` | Multi-output regression |
-| 90 | High noise | `make_regression(n_samples=200, n_features=5, noise=50, random_state=42)` | Ridge/Lasso robustness comparison |
-| 91 | Friedman #1 | `make_friedman1(n_samples=200, random_state=42)` | Non-linear regression (tree/boosting) |
-| 92 | Friedman #2 | `make_friedman2(n_samples=200, random_state=42)` | Non-linear regression variant |
-| 93 | Friedman #3 | `make_friedman3(n_samples=200, random_state=42)` | Non-linear regression variant |
+| 135 | Linear, low noise | `make_regression(n_samples=200, n_features=5, noise=10, random_state=42)` | Linear Regression basics |
+| 136 | Single feature (visualizable) | `make_regression(n_samples=200, n_features=1, noise=20, random_state=42)` | Simple/Polynomial Regression, plotting the fit line |
+| 137 | Multi-output | `make_regression(n_samples=200, n_features=5, n_targets=2, random_state=42)` | Multi-output regression |
+| 138 | High noise | `make_regression(n_samples=200, n_features=5, noise=50, random_state=42)` | Ridge/Lasso robustness comparison |
+| 139 | Friedman #1 | `make_friedman1(n_samples=200, random_state=42)` | Non-linear regression (tree/boosting) |
+| 140 | Friedman #2 | `make_friedman2(n_samples=200, random_state=42)` | Non-linear regression variant |
+| 141 | Friedman #3 | `make_friedman3(n_samples=200, random_state=42)` | Non-linear regression variant |
 
 ### Classification (10)
 
 | # | Recipe | Load Code | Targets which topic |
 |---|---|---|---|
-| 94 | Binary, balanced | `make_classification(n_samples=300, n_classes=2, random_state=42)` | Logistic Regression, SVM basics |
-| 95 | Imbalanced (90/10) | `make_classification(n_samples=300, weights=[0.9, 0.1], random_state=42)` | Class-imbalance handling |
-| 96 | Multiclass (4-class) | `make_classification(n_samples=300, n_classes=4, n_informative=4, random_state=42)` | Multiclass classifiers |
-| 97 | 2D visualizable | `make_classification(n_samples=300, n_features=2, n_informative=2, n_redundant=0, random_state=42)` | Decision boundary plotting |
-| 98 | Gaussian quantiles | `make_gaussian_quantiles(n_samples=300, random_state=42)` | Non-linear boundary practice |
-| 99 | Hastie 10.2 | `make_hastie_10_2(n_samples=300, random_state=42)` | AdaBoost/Boosting benchmark (used in sklearn's own docs) |
-| 100 | Moons | `make_moons(n_samples=300, noise=0.1, random_state=42)` | Kernel SVM, KNN non-linear boundaries |
-| 101 | Circles | `make_circles(n_samples=300, noise=0.05, random_state=42)` | Kernel trick demonstration |
-| 102 | Moons (low noise, for clustering) | `make_moons(n_samples=300, noise=0.05, random_state=42)` | DBSCAN non-convex cluster practice |
-| 103 | Circles (for clustering) | `make_circles(n_samples=300, noise=0.03, factor=0.5, random_state=42)` | DBSCAN non-convex cluster practice |
+| 142 | Binary, balanced | `make_classification(n_samples=300, n_classes=2, random_state=42)` | Logistic Regression, SVM basics |
+| 143 | Imbalanced (90/10) | `make_classification(n_samples=300, weights=[0.9, 0.1], random_state=42)` | Class-imbalance handling |
+| 144 | Multiclass (4-class) | `make_classification(n_samples=300, n_classes=4, n_informative=4, random_state=42)` | Multiclass classifiers |
+| 145 | 2D visualizable | `make_classification(n_samples=300, n_features=2, n_informative=2, n_redundant=0, random_state=42)` | Decision boundary plotting |
+| 146 | Gaussian quantiles | `make_gaussian_quantiles(n_samples=300, random_state=42)` | Non-linear boundary practice |
+| 147 | Hastie 10.2 | `make_hastie_10_2(n_samples=300, random_state=42)` | AdaBoost/Boosting benchmark (used in sklearn's own docs) |
+| 148 | Moons | `make_moons(n_samples=300, noise=0.1, random_state=42)` | Kernel SVM, KNN non-linear boundaries |
+| 149 | Circles | `make_circles(n_samples=300, noise=0.05, random_state=42)` | Kernel trick demonstration |
+| 150 | Moons (low noise, for clustering) | `make_moons(n_samples=300, noise=0.05, random_state=42)` | DBSCAN non-convex cluster practice |
+| 151 | Circles (for clustering) | `make_circles(n_samples=300, noise=0.03, factor=0.5, random_state=42)` | DBSCAN non-convex cluster practice |
 
 ### Clustering (4)
 
 | # | Recipe | Load Code | Targets which topic |
 |---|---|---|---|
-| 104 | 3 well-separated blobs | `make_blobs(n_samples=300, centers=3, random_state=42)` | K-Means introduction |
-| 105 | 5 overlapping blobs | `make_blobs(n_samples=300, centers=5, cluster_std=2.5, random_state=42)` | Gaussian Mixture Models |
-| 106 | 2 simple blobs | `make_blobs(n_samples=300, centers=2, n_features=2, random_state=42)` | Simple 2D clustering visualization |
-| 107 | Biclusters | `make_biclusters(shape=(100, 50), n_clusters=3, random_state=42)` | Advanced biclustering practice |
+| 152 | 3 well-separated blobs | `make_blobs(n_samples=300, centers=3, random_state=42)` | K-Means introduction |
+| 153 | 5 overlapping blobs | `make_blobs(n_samples=300, centers=5, cluster_std=2.5, random_state=42)` | Gaussian Mixture Models |
+| 154 | 2 simple blobs | `make_blobs(n_samples=300, centers=2, n_features=2, random_state=42)` | Simple 2D clustering visualization |
+| 155 | Biclusters | `make_biclusters(shape=(100, 50), n_clusters=3, random_state=42)` | Advanced biclustering practice |
 
 ### Manifold / Dimensionality Reduction (3)
 
 | # | Recipe | Load Code | Targets which topic |
 |---|---|---|---|
-| 108 | Swiss roll | `make_swiss_roll(n_samples=300, random_state=42)` | t-SNE/UMAP non-linear manifold demo |
-| 109 | S-curve | `make_s_curve(n_samples=300, random_state=42)` | Manifold learning comparison |
-| 110 | Low-rank matrix | `make_low_rank_matrix(n_samples=100, n_features=20, random_state=42)` | PCA with controllable effective rank |
+| 156 | Swiss roll | `make_swiss_roll(n_samples=300, random_state=42)` | t-SNE/UMAP non-linear manifold demo |
+| 157 | S-curve | `make_s_curve(n_samples=300, random_state=42)` | Manifold learning comparison |
+| 158 | Low-rank matrix | `make_low_rank_matrix(n_samples=100, n_features=20, random_state=42)` | PCA with controllable effective rank |
 
 ### Math / Misc (4)
 
 | # | Recipe | Load Code | Targets which topic |
 |---|---|---|---|
-| 111 | SPD matrix | `make_spd_matrix(n_dim=5, random_state=42)` | Covariance matrix practice (ties to Math Refresher) |
-| 112 | Sparse uncorrelated | `make_sparse_uncorrelated(n_samples=200, random_state=42)` | Feature selection (only a few features matter) |
-| 113 | Multilabel classification | `make_multilabel_classification(n_samples=200, n_classes=3, random_state=42)` | Multi-label practice (bonus, beyond this series' scope) |
-| 114 | Checkerboard | `make_checkerboard(shape=(100, 50), n_clusters=3, random_state=42)` | Advanced biclustering variant |
+| 159 | SPD matrix | `make_spd_matrix(n_dim=5, random_state=42)` | Covariance matrix practice (ties to Math Refresher) |
+| 160 | Sparse uncorrelated | `make_sparse_uncorrelated(n_samples=200, random_state=42)` | Feature selection (only a few features matter) |
+| 161 | Multilabel classification | `make_multilabel_classification(n_samples=200, n_classes=3, random_state=42)` | Multi-label practice (bonus, beyond this series' scope) |
+| 162 | Checkerboard | `make_checkerboard(shape=(100, 50), n_clusters=3, random_state=42)` | Advanced biclustering variant |
 
 ---
 
@@ -235,28 +315,29 @@ Zero network dependency, fully reproducible with `random_state=`, and parameteri
 
 | Classical ML topic (coming next) | Recommended datasets |
 |---|---|
-| Linear/Polynomial Regression | #87, #88, #4 (Diabetes), #7 (California Housing) |
-| Ridge/Lasso/ElasticNet | #90 (high noise), #112 (sparse/uncorrelated) |
-| Logistic Regression | #94, #37 (Adult), #65 (Diabetes classification) |
-| KNN (classification/regression) | #100 (Moons), #1 (Iris), #17 (Penguins) |
+| Linear/Polynomial Regression | #135, #136, #4 (Diabetes), #7 (California Housing) |
+| Ridge/Lasso/ElasticNet | #138 (high noise), #160 (sparse/uncorrelated) — or `csv/synthetic/regression_high_noise.csv` |
+| Logistic Regression | #142, #37 (Adult), #65 (Diabetes classification) |
+| KNN (classification/regression) | #148 (Moons), #1 (Iris), #17 (Penguins) |
 | Naive Bayes | #39 (Mushroom), #40 (Spambase) |
 | Decision Trees / Random Forest | #46 (Car), #61 (Blood Transfusion), any classification set |
-| SVM (kernel trick) | #101 (Circles), #100 (Moons) |
-| Boosting (AdaBoost/XGBoost/etc.) | #99 (Hastie 10.2), #59 (Wine Quality) |
-| K-Means / Hierarchical / DBSCAN | #104, #105, #102, #103, #31 (Geyser — the classic!) |
-| PCA / Dimensionality Reduction | #110, #26 (Brain Networks), #8 (Digits) |
-| t-SNE / UMAP | #108 (Swiss Roll), #109 (S-Curve) |
+| SVM (kernel trick) | #149 (Circles), #148 (Moons) |
+| Boosting (AdaBoost/XGBoost/etc.) | #147 (Hastie 10.2), #59 (Wine Quality) |
+| K-Means / Hierarchical / DBSCAN | #152, #153, #150, #151, #31 (Geyser — the classic!) |
+| PCA / Dimensionality Reduction | #158, #26 (Brain Networks), #8 (Digits) |
+| t-SNE / UMAP | #156 (Swiss Roll), #157 (S-Curve) |
 | Association Rules (Apriori) | #46 (Car), #72 (Nursery) — categorical-heavy sets work best |
 | Model Evaluation & Tuning | Any dataset above — practice CV/tuning on a few different ones |
+| Class-imbalance practice | `csv/synthetic/classification_imbalanced_99_1.csv` and its siblings (90/10, 95/5, 80/20 variants) |
 
 ---
 
 ## ⚠️ Caveats & Notes
 
 1. **OpenML names can occasionally have multiple versions.** If `fetch_openml(name=...)` ever raises a version-ambiguity error, add `version=1` (or check [openml.org](https://www.openml.org) to search for the current canonical name/version).
-2. **All 114 entries in this catalog were live-verified while building it** — every name/function call above was actually executed successfully. If one ever breaks in the future (OpenML dataset removed/renamed), search openml.org for a replacement.
-3. **Large datasets** (Covertype, RCV1, Adult, Diamonds, Letter) are worth downsampling (`df.sample(n=..., random_state=42)`) for quick iteration during learning — full-size only when you specifically want to practice at scale.
-4. **First download requires internet**; every subsequent load is served from local cache (`~/scikit_learn_data/` for sklearn/OpenML, `~/seaborn-data/` for seaborn) — no repeated network dependency.
+2. **All 162 cataloged entries (and all 212 CSV files) were live-verified while building this catalog** — every name/function call was actually executed successfully and the resulting file inspected. If one ever breaks in the future (OpenML dataset removed/renamed), search openml.org for a replacement.
+3. **Large datasets** (Covertype, RCV1, Adult, Diamonds, Letter, and several OpenML sets) were downsampled to 15,000 rows in the CSV export (see `MANIFEST.csv`'s `sampled_from` column) — use the API load call for the full, un-sampled version when you specifically want to practice at scale.
+4. **First API download requires internet**; every subsequent load is served from local cache (`~/scikit_learn_data/` for sklearn/OpenML, `~/seaborn-data/` for seaborn). The `csv/` files need no network at all, ever.
 5. **Licensing**: all datasets here are long-established public research/benchmark datasets distributed through official library APIs. If you redistribute a *derived* file from any of them, check the original dataset's license/citation requirements first (most require attribution only).
 
 ---
