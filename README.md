@@ -12,7 +12,7 @@ Core basics every ML learner needs before touching algorithms — Python data to
 | 02 | [Data Visualization](02_Data_Visualization/) | Matplotlib & Seaborn — plots, subplots, styling for EDA | ✅ |
 | 03 | [Data Preprocessing & EDA](03_Data_Preprocessing_EDA/) | Missing values, encoding, scaling, outlier detection | ✅ |
 | 04 | [Feature Engineering](04_Feature_Engineering/) | Feature creation, selection, transformation techniques | ✅ |
-| 05 | [Math Refresher](05_Math_Refresher/) | Linear Algebra, Probability & Statistics for ML | 🚧 |
+| 05 | [Math Refresher](05_Math_Refresher/) | Linear Algebra, Probability & Statistics for ML | ✅ |
 
 ## 📁 Structure
 
