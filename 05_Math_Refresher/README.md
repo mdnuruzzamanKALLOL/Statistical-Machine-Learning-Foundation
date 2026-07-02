@@ -47,6 +47,9 @@ Every concept below is a direct preview of a Classical ML notebook coming next. 
 | Gradient descent | Logistic Regression, Boosting, every neural net | The literal training loop of these algorithms |
 | Central Limit Theorem | Cross-Validation, Hypothesis testing | Justifies why performance-metric averages across folds behave predictably |
 | Covariance / correlation | Ridge/Lasso (multicollinearity), PCA | High feature correlation destabilizes linear model coefficients |
+| SVD / matrix rank | PCA, Linear Regression multicollinearity | SVD is PCA's actual computation; rank-deficiency breaks the Normal Equation |
+| Hypothesis testing (t-test) | Model Evaluation & Tuning | Rigorously compares two models' cross-validation scores, not just eyeballing means |
+| Law of Large Numbers | Model Evaluation & Tuning, general ML | Formal reason more training data → more reliable learned parameters |
 
 ---
 
@@ -77,6 +80,18 @@ For a square matrix $A$, a non-zero vector $\mathbf{v}$ is an **eigenvector** wi
 $$A\mathbf{v} = \lambda \mathbf{v}$$
 
 In words: applying $A$ to $\mathbf{v}$ doesn't rotate it, only scales it by $\lambda$. When $A$ is a **covariance matrix**, its eigenvectors point along the directions of maximum variance in the data, and the corresponding eigenvalues quantify *how much* variance lies along each direction. This is precisely what **PCA** computes: rank eigenvectors by eigenvalue (largest first), keep the top $k$, and project the data onto them — a full dimensionality reduction pipeline that is, underneath, nothing more than this equation applied to a covariance matrix.
+
+### 4. Matrix rank & singular matrices
+
+The **rank** of $A$ is the number of linearly independent rows (equivalently, columns) it has. A square matrix is **singular** (non-invertible, $\det(A) = 0$) exactly when its rank is less than its dimension — meaning at least one row/column is a linear combination of the others. In a feature matrix $X$, this happens when two features are perfectly collinear (e.g., a feature measured in two different unit systems), and it is precisely what makes $X^TX$ non-invertible in the Normal Equation from §2 — the formal cause of "perfect multicollinearity" breaking Linear Regression's closed-form solution.
+
+### 5. Singular Value Decomposition (SVD)
+
+Any matrix $A \in \mathbb{R}^{n \times d}$ (not just square, not just symmetric) factors as:
+
+$$A = U \Sigma V^T$$
+
+where $U$ and $V$ are orthogonal matrices and $\Sigma$ is diagonal, holding the **singular values** $\sigma_1 \geq \sigma_2 \geq \dots \geq 0$. SVD generalizes eigendecomposition to *any* matrix shape, and is the numerically stable algorithm libraries actually use to compute PCA: the columns of $V$ (the **right singular vectors**) are exactly PCA's principal components, and $\sigma_i^2$ relates directly to the variance explained by component $i$.
 
 ---
 
@@ -122,6 +137,12 @@ $$\mathbb{E}[X] = \sum_i x_i\, p_i \qquad \text{Var}(X) = \mathbb{E}[(X - \mathb
 
 These are the population-level analogues of the sample mean $\bar{x}$ and sample variance $s^2$ used throughout topics 01–04 — expectation and variance are what those sample statistics are *estimating*.
 
+### 4. Conditional probability & independence
+
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
+
+$A$ and $B$ are **independent** exactly when $P(A \mid B) = P(A)$ — knowing $B$ happened doesn't change the probability of $A$. This is the assumption Naive Bayes makes about features *given the class* (the "naive" part of its name): it assumes $P(x_1, x_2, \dots \mid C) = P(x_1 \mid C) \cdot P(x_2 \mid C) \cdots$, which is rarely exactly true in real data but is often a good enough approximation to still make useful predictions.
+
 ---
 
 ## 📊 Part III — Statistics
@@ -141,6 +162,30 @@ For i.i.d. samples $X_1, \dots, X_k$ drawn from *any* distribution with finite m
 $$\bar{X} \approx \mathcal{N}\left(\mu,\ \frac{\sigma^2}{k}\right) \quad \text{as } k \to \infty$$
 
 The notebook demonstrates this directly: sampling means from a heavily right-skewed exponential population still produces a bell-shaped histogram of means. This is *why* K-Fold Cross-Validation (Model Evaluation & Tuning, later in Classical ML) can treat the average performance metric across folds as a reasonably stable, normally-behaved estimate — even when the underlying error distribution per sample is not normal at all.
+
+### 3. Confidence intervals
+
+A 95% confidence interval for a sample mean, using the CLT's normal approximation:
+
+$$\bar{X} \pm 1.96 \cdot \frac{s}{\sqrt{n}}$$
+
+where $s$ is the sample standard deviation and $1.96$ is the 97.5th percentile of the standard normal (leaving 2.5% in each tail, 5% total, for a 95% interval). The *correct* interpretation is subtle and commonly misstated: it does **not** mean "95% probability the true mean is in this specific interval" — it means "if you repeated this sampling procedure many times, 95% of the intervals constructed this way would contain the true mean." The notebook verifies this exact definition by simulating the repetition directly.
+
+### 4. Hypothesis testing — the t-test
+
+To test whether two samples' means differ significantly, the two-sample t-statistic is:
+
+$$t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}$$
+
+Large $|t|$ (relative to the t-distribution) means the observed difference is unlikely under the **null hypothesis** ($H_0$: no true difference). The **p-value** converts $t$ into a probability: it is $P(\text{observing a difference this extreme} \mid H_0 \text{ is true})$. A small p-value (conventionally $< 0.05$) is evidence to reject $H_0$. This exact test is what you'll use to rigorously compare two models' cross-validation scores later, rather than just eyeballing which mean looks bigger.
+
+### 5. Law of Large Numbers (LLN)
+
+As sample size $n \to \infty$, the sample mean converges to the true population mean:
+
+$$\bar{X}_n \xrightarrow{n \to \infty} \mu$$
+
+This is distinct from the CLT (which describes the *shape* of $\bar{X}_n$'s distribution around $\mu$) — LLN is the more basic guarantee that $\bar{X}_n$ actually *lands on* $\mu$ eventually. It's the formal reason "more training data generally produces more reliable estimates" (feature means, class frequencies, learned parameters) isn't just folklore.
 
 ---
 
@@ -163,6 +208,22 @@ $$x_{t+1} = x_t - \eta \nabla f(x_t)$$
 where $\eta$ (the **learning rate**) controls step size. The notebook minimizes the toy function $f(x) = (x-3)^2 + 2$ (true minimum at $x=3$) starting from $x=-5$, and watches it converge to $x \approx 2.99$ in 30 steps — the exact same mechanism, scaled up to millions of parameters, is what "training" means for the vast majority of modern ML.
 
 > **Learning rate intuition:** too small $\eta$ → convergence is correct but painfully slow. Too large $\eta$ → the update can overshoot the minimum and diverge or oscillate. Tuning $\eta$ is one of the most consequential hyperparameter choices in the Model Evaluation & Tuning notebooks ahead.
+
+### 3. Numerical gradients — finite differences
+
+When an analytical derivative is inconvenient (or you want to double-check one), the **central finite-difference** formula approximates it directly:
+
+$$\frac{\partial f}{\partial x_i} \approx \frac{f(\mathbf{x} + h\,\mathbf{e}_i) - f(\mathbf{x} - h\,\mathbf{e}_i)}{2h}$$
+
+for a small step $h$ (e.g. $10^{-5}$) and unit vector $\mathbf{e}_i$. The notebook confirms this matches the true analytical gradient of $f(x,y) = x^2 + 3y^2$ to 5 decimal places — this exact technique (`gradcheck`) is how deep learning frameworks like PyTorch verify a custom-written backward pass is implemented correctly.
+
+### 4. Multivariate gradient descent
+
+Nothing changes about the update rule from §2 when moving to multiple dimensions — only $\nabla f$ becomes a vector instead of a scalar:
+
+$$\mathbf{x}_{t+1} = \mathbf{x}_t - \eta \nabla f(\mathbf{x}_t)$$
+
+The notebook visualizes this on $f(x,y) = (x-2)^2 + 3(y+1)^2$ via a contour plot: the descent path bends to always point toward steeper regions of the bowl, converging to the true minimum $(2, -1)$ — the same picture, just in 2D instead of 1D, as what happens (in far higher dimensions) when training any gradient-based model.
 
 ---
 
@@ -187,6 +248,10 @@ where $\eta$ (the **learning rate**) controls step size. The notebook minimizes 
 | `scipy.stats.norm`, `.binom`, `.poisson` | Probability distribution PDFs/PMFs |
 | `np.cov(X, rowvar=False)` | Sample covariance matrix |
 | `np.random.multivariate_normal()` | Correlated random data generation |
+| `np.linalg.matrix_rank()` | Matrix rank (singularity check) |
+| `np.linalg.svd()` | Singular Value Decomposition |
+| `scipy.stats.ttest_ind()` | Two-sample t-test (hypothesis testing) |
+| Manual finite-difference formula | Numerical gradient approximation |
 
 ---
 
