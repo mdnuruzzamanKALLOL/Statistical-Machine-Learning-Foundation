@@ -18,6 +18,10 @@ Core basics every ML learner needs before touching algorithms — Python data to
 
 Each topic folder contains its own `README.md` (concept + math explanation) and a Jupyter notebook (`.ipynb`) with hands-on implementation.
 
+## 📦 Datasets
+
+[**datasets/README.md**](datasets/) — a catalog of 114 load-tested datasets (real-world + synthetic) for practicing every algorithm in this series, mapped to the topic each one is best suited for.
+
 ## 🔗 Related
 
 - [Classical ML →](https://github.com/mdnuruzzamanKALLOL/Statistical-Machine-Learning-Classical-ML)
