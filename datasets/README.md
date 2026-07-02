@@ -1,41 +1,29 @@
-# 📦 Dataset Catalog — 162 Cataloged Datasets, 212 Ready-to-Use CSV Files
+# 📦 Dataset Catalog — 162 Cataloged Datasets
 
-A curated, **fully load-tested** catalog of datasets for practicing every algorithm in this series (Foundation + [Classical ML](https://github.com/mdnuruzzamanKALLOL/Statistical-Machine-Learning-Classical-ML)). Every dataset below has **both** a one-line API load call **and** an actual CSV file sitting in [`csv/`](csv/) — pick whichever fits your workflow.
+A curated, **fully load-tested** catalog of datasets for practicing every algorithm in this series (Foundation + [Classical ML](https://github.com/mdnuruzzamanKALLOL/Statistical-Machine-Learning-Classical-ML)). Every dataset below has a one-line API load call — no manual downloads, no broken links.
 
-## 📊 Catalog Summary
+## 💾 Want the actual CSV files?
 
-| Source | Cataloged | As CSV | Best for |
-|---|---|---|---|
-| [scikit-learn built-in / fetchable](#-1-scikit-learn-built-in--fetchable-13) | 13 | 8 (5 are text/image, kept API-only) | Classic benchmarks, zero setup |
-| [Seaborn built-in](#-2-seaborn-built-in-22) | 22 | 22 | EDA practice, quick visualization datasets |
-| [OpenML — batch 1](#-3-openml-real-world-batch-1-30) | 30 | 30 | Classification-heavy real-world practice |
-| [OpenML — batch 2](#-4-openml-real-world-batch-2-21) | 21 | 21 | More classification + a few regression |
-| [OpenML — batch 3](#-5-openml-real-world-batch-3-48) | 48 | 48 | Extra real-world variety (medical, sensor, economic data) |
-| [Synthetic generators](#-6-synthetic-generators-sklearndatasetsmake_-83) | 28 (+55 extra param sweeps as CSV only) | 83 | Algorithm-targeted practice (clustering, manifolds, imbalanced classes...) |
-| **Total** | **162 cataloged** | **212 CSV files (~53 MB)** | |
-
-## 💾 Local CSV Files — `csv/`
-
-Every dataset also lives as an actual file under `csv/<source>/<name>.csv`, generated and verified in one pass:
-
-```
-csv/
-├── MANIFEST.csv       ← full index: name, task, rows, cols, size, source, path — for all 212 files
-├── sklearn/           ← 8 files
-├── seaborn/           ← 22 files
-├── openml/            ← 99 files (batches 1+2+3 combined)
-└── synthetic/         ← 83 files (28 core recipes + 55 extra parameter sweeps)
-```
+All 212 of them (plus this author's broader personal dataset collection — 418 files total) now live in one central repo: **[github.com/mdnuruzzamanKALLOL/Datasets](https://github.com/mdnuruzzamanKALLOL/Datasets)**, organized as `sklearn/`, `seaborn/`, `openml/`, `synthetic/`, and `personal_collection/`, with a `MANIFEST_curated.csv` index. This catalog stays load-code-only so it's easy to keep in sync with that repo without duplicating ~53MB of data across two places.
 
 ```python
 import pandas as pd
-df = pd.read_csv("datasets/csv/openml/credit-g.csv")          # any dataset, offline, no network call
-manifest = pd.read_csv("datasets/csv/MANIFEST.csv")            # full searchable index of all 212 files
+df = pd.read_csv("credit-g.csv")   # after cloning github.com/mdnuruzzamanKALLOL/Datasets, e.g. from openml/credit-g.csv
 ```
 
-Datasets larger than 15,000 rows (California Housing, Covertype, Adult, Diamonds, Letter, and several OpenML sets) were **randomly downsampled to 15,000 rows** (`random_state=42`) to keep individual files small and the repo lightweight — check the `sampled_from` column in `MANIFEST.csv` for the original row count, or use the API load call above to get the full, un-sampled version.
+## 📊 Catalog Summary
 
-The 55 extra synthetic parameter sweeps (different noise levels, class counts, cluster counts, random seeds) exist **only** as CSVs, not written out individually in the tables below — see `MANIFEST.csv` for their exact names and parameters (self-descriptive, e.g. `classification_imbalanced_99_1.csv`, `blobs_6_seed30.csv`).
+| Source | Cataloged | Best for |
+|---|---|---|
+| [scikit-learn built-in / fetchable](#-1-scikit-learn-built-in--fetchable-13) | 13 | Classic benchmarks, zero setup |
+| [Seaborn built-in](#-2-seaborn-built-in-22) | 22 | EDA practice, quick visualization datasets |
+| [OpenML — batch 1](#-3-openml-real-world-batch-1-30) | 30 | Classification-heavy real-world practice |
+| [OpenML — batch 2](#-4-openml-real-world-batch-2-21) | 21 | More classification + a few regression |
+| [OpenML — batch 3](#-5-openml-real-world-batch-3-48) | 48 | Extra real-world variety (medical, sensor, economic data) |
+| [Synthetic generators](#-6-synthetic-generators-sklearndatasetsmake_-83) | 28 (+55 extra param sweeps, CSV-only in the Datasets repo) | Algorithm-targeted practice (clustering, manifolds, imbalanced classes...) |
+| **Total** | **162 cataloged (212 as CSV in the [Datasets repo](https://github.com/mdnuruzzamanKALLOL/Datasets))** | |
+
+Datasets larger than 15,000 rows (California Housing, Covertype, Adult, Diamonds, Letter, and several OpenML sets) were **randomly downsampled to 15,000 rows** (`random_state=42`) in the CSV export to keep files portable — check `MANIFEST_curated.csv` in the Datasets repo for original row counts, or use the API load call below to get the full, un-sampled version.
 
 ## 📑 Table of Contents
 
@@ -316,7 +304,7 @@ Zero network dependency, fully reproducible with `random_state=`, and parameteri
 | Classical ML topic (coming next) | Recommended datasets |
 |---|---|
 | Linear/Polynomial Regression | #135, #136, #4 (Diabetes), #7 (California Housing) |
-| Ridge/Lasso/ElasticNet | #138 (high noise), #160 (sparse/uncorrelated) — or `csv/synthetic/regression_high_noise.csv` |
+| Ridge/Lasso/ElasticNet | #138 (high noise), #160 (sparse/uncorrelated) — or `synthetic/regression_high_noise.csv` in the Datasets repo |
 | Logistic Regression | #142, #37 (Adult), #65 (Diabetes classification) |
 | KNN (classification/regression) | #148 (Moons), #1 (Iris), #17 (Penguins) |
 | Naive Bayes | #39 (Mushroom), #40 (Spambase) |
@@ -328,7 +316,7 @@ Zero network dependency, fully reproducible with `random_state=`, and parameteri
 | t-SNE / UMAP | #156 (Swiss Roll), #157 (S-Curve) |
 | Association Rules (Apriori) | #46 (Car), #72 (Nursery) — categorical-heavy sets work best |
 | Model Evaluation & Tuning | Any dataset above — practice CV/tuning on a few different ones |
-| Class-imbalance practice | `csv/synthetic/classification_imbalanced_99_1.csv` and its siblings (90/10, 95/5, 80/20 variants) |
+| Class-imbalance practice | `synthetic/classification_imbalanced_99_1.csv` (and siblings: 90/10, 95/5, 80/20 variants) in the Datasets repo |
 
 ---
 
@@ -336,8 +324,8 @@ Zero network dependency, fully reproducible with `random_state=`, and parameteri
 
 1. **OpenML names can occasionally have multiple versions.** If `fetch_openml(name=...)` ever raises a version-ambiguity error, add `version=1` (or check [openml.org](https://www.openml.org) to search for the current canonical name/version).
 2. **All 162 cataloged entries (and all 212 CSV files) were live-verified while building this catalog** — every name/function call was actually executed successfully and the resulting file inspected. If one ever breaks in the future (OpenML dataset removed/renamed), search openml.org for a replacement.
-3. **Large datasets** (Covertype, RCV1, Adult, Diamonds, Letter, and several OpenML sets) were downsampled to 15,000 rows in the CSV export (see `MANIFEST.csv`'s `sampled_from` column) — use the API load call for the full, un-sampled version when you specifically want to practice at scale.
-4. **First API download requires internet**; every subsequent load is served from local cache (`~/scikit_learn_data/` for sklearn/OpenML, `~/seaborn-data/` for seaborn). The `csv/` files need no network at all, ever.
+3. **Large datasets** (Covertype, RCV1, Adult, Diamonds, Letter, and several OpenML sets) were downsampled to 15,000 rows in the CSV export (see `MANIFEST_curated.csv`'s `sampled_from` column in the [Datasets repo](https://github.com/mdnuruzzamanKALLOL/Datasets)) — use the API load call for the full, un-sampled version when you specifically want to practice at scale.
+4. **First API download requires internet**; every subsequent load is served from local cache (`~/scikit_learn_data/` for sklearn/OpenML, `~/seaborn-data/` for seaborn). The CSV files in the [Datasets repo](https://github.com/mdnuruzzamanKALLOL/Datasets) need no network at all, once cloned.
 5. **Licensing**: all datasets here are long-established public research/benchmark datasets distributed through official library APIs. If you redistribute a *derived* file from any of them, check the original dataset's license/citation requirements first (most require attribution only).
 
 ---
