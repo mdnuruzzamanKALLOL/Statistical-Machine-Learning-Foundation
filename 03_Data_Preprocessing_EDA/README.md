@@ -207,3 +207,6 @@ Full pipeline on a deliberately messy synthetic dataset: missingness map, duplic
 
 ---
 [← Back to Foundation](../README.md)
+
+<!-- page-views-badge -->
+![Page Views](https://visitor-badge.laobi.icu/badge?page_id=mdnuruzzamanKALLOL.Foundation.03_Data_Preprocessing_EDA&left_color=%23555555&right_color=%23E67E22&left_text=Page%20Views)

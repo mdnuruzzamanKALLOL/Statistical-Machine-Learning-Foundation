@@ -182,3 +182,6 @@ Full pipeline on a synthetic e-commerce dataset: date decomposition, ratio/inter
 
 ---
 [← Back to Foundation](../README.md)
+
+<!-- page-views-badge -->
+![Page Views](https://visitor-badge.laobi.icu/badge?page_id=mdnuruzzamanKALLOL.Foundation.04_Feature_Engineering&left_color=%23555555&right_color=%23E67E22&left_text=Page%20Views)

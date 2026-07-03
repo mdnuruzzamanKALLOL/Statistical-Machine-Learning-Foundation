@@ -185,3 +185,6 @@ Hands-on implementation of every chart type above, executed end-to-end on a synt
 
 ---
 [← Back to Foundation](../README.md)
+
+<!-- page-views-badge -->
+![Page Views](https://visitor-badge.laobi.icu/badge?page_id=mdnuruzzamanKALLOL.Foundation.02_Data_Visualization&left_color=%23555555&right_color=%23E67E22&left_text=Page%20Views)
